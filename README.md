@@ -1,2 +1,2 @@
-# pyht4032l
-Hantek 4032L python wrapper
+# PyHT4032L
+Hantek 4032L logic analyzer python access using original Windows driver
