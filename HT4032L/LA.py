@@ -1,3 +1,4 @@
+"""Driver-agnostic LA interface"""
 import sys
 import ctypes
 from time import sleep
@@ -31,6 +32,7 @@ class Trigger(ctypes.LittleEndianStructure):
 				("CombinedData", ctypes.c_ulong)]
 
 class Config(ctypes.LittleEndianStructure):
+	"""LA config structure"""
 	_pack_ = 1
 	_fields_ = [("Magic", ctypes.c_ushort),
 				("SampleRate", ctypes.c_ubyte),
@@ -76,27 +78,34 @@ def _thr2dac(voltage):
 ############################################################################################
 
 class LA(object):
+	"""Main LA interface class"""
 	def __init__(self, driver):
+		"""Param: driver - driver wrapper instance"""
 		self.driver = driver
 		self.config = Config()
 		ctypes.memmove(ctypes.addressof(self.config), cmd_start, ctypes.sizeof(self.config))
 		self.status = array('L', "\x00"*1024)
 
 	def open(self):
+		"""Open device"""
 		self.driver.open()
 
 	def close(self):
+		"""Close device"""
 		self.driver.close()
 		
 	def Reset(self):
+		"""Reset acquisition engine and USB buffers"""
 		res = self.driver.vendor_out(0xB3, 0, 0, "\x0F\x03\x03\x03\x00\x00\x00\x00\x00\x00")
 		sleep(0.005)
 		return res!=0
 
 	def Start(self):
+		"""Start acquisition with parameters from config"""
 		self.driver.write(buffer(self.config)[:])
 
 	def Poll(self):
+		"""Get LA status"""
 		self.driver.write(cmd_poll)
 		outsize = 0
 		got_start = False
@@ -121,6 +130,7 @@ class LA(object):
 		return retry_count<5
 
 	def GetData(self):
+		"""Get acquired data"""
 		self.driver.write(cmd_get)
 		outbuf = array('L')
 		outsize = 0
@@ -145,19 +155,23 @@ class LA(object):
 		return outbuf
 
 	def GetTriggerStatus(self):
+		"""Get LA trigger status. Result: 0 - idle, 1 - waiting for trigger, 2 - finished capture, data is ready"""
 		if not self.Poll():
 			return -1
 		return self.status[2]
 
 	def GetBusData(self):
+		"""Get live probe bus value"""
 		if not self.Poll():
 			return -1
 		return self.status[1]
 
 	def SetThresholdA(self, voltage):
+		"""Set channel A threshold voltage"""
 		self.config.DacA = _thr2dac(voltage)
 
 	def SetThresholdB(self, voltage):
+		"""Set channel B threshold voltage"""
 		self.config.DacB = _thr2dac(voltage)
 
 __all__ = ["LA"]

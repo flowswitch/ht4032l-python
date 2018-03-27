@@ -1,7 +1,9 @@
+"""Hantek Windows driver wrapper"""
 import ctypes
 import ctypes.wintypes as wintypes
 from ctypes import windll
 from struct import pack, unpack
+from binascii import hexlify
 
 LPDWORD = ctypes.POINTER(wintypes.DWORD)
 LPOVERLAPPED = wintypes.LPVOID
@@ -93,12 +95,18 @@ HT_IOCTL_WRITE  = 0x222051
 HT_IOCTL_VENDOR = 0x222059
 
 class HTDriver(object):
+	"""Wrapper class"""
 	def __init__(self, index=0, dump=False):
+		"""Params:
+		index - device index
+		dump - dump all communications
+		"""
 		self.index = index
 		self.dump = dump
 		self._fhandle = None
 
 	def open(self):
+		"""Open device"""
 		if self._fhandle:
 			return
 		self._fhandle = _CreateFile(
@@ -108,9 +116,9 @@ class HTDriver(object):
 				OPEN_EXISTING,
 				FILE_ATTRIBUTE_NORMAL)
 		self._validate_handle()
-		return
 
 	def close(self):
+		"""Close device"""
 		if self._fhandle:
 			windll.kernel32.CloseHandle(self._fhandle)
 			self._fhandle = None
@@ -128,40 +136,43 @@ class HTDriver(object):
 		return _DeviceIoControl(self._fhandle, ctl, inbuf, inbufsiz, outbuf, outbufsiz)
 
 	def read(self, size):
+		"""Read from IN pipe"""
 		buf = ctypes.create_string_buffer(size)
 		sts, outsize = self._ioctl(HT_IOCTL_READ, "\x01\x00\x00\x00", 4, ctypes.byref(buf), size)
 		if not sts:
 			return ""
 		rsp = buf.raw[0:outsize]
 		if self.dump:
-			print "<",
-			outhex(rsp)
+			print "<", hexlify(rsp)
 		return rsp
 
 	def write(self, data):
+		"""Write to OUT pipe"""
 		if self.dump:
-			print ">",
-			outhex(data)			
+			print ">", hexlify(data)
 		sts, outsize = self._ioctl(HT_IOCTL_WRITE, "\x00\x00\x00\x00", 4, data, len(data))
 		if not sts:
 			return 0
 		return outsize
 					 
 	def vendor_out(self, request, value, index, data):
+		"""EP0 vendor out"""
+		if self.dump:
+			print "%02X %04X %04X >" % (request, value, index), hexlify(data)
 		sts, outsize = self._ioctl(HT_IOCTL_VENDOR, pack("<BHBBBHH", 0, 2, 0, request, 0, value, index), 10, data, len(data))
 		if not sts:
 			return 0
 		return outsize
 
 	def vendor_in(self, request, value, index, length):
+		"""EP0 vendor in"""
 		buf = ctypes.create_string_buffer(length)
 		sts, outsize = self._ioctl(HT_IOCTL_VENDOR, pack("<BHBBBHH", 1, 2, 0, request, 0, value, index), 10, ctypes.byref(buf), length)
 		if not sts:
 			return ""
 		rsp = buf.raw[0:outsize]
 		if self.dump:
-			print "<",
-			outhex(rsp)
+			print "%02X %04X %04X <" % (request, value, index), hexlify(rsp)
 		return rsp
 
 
