@@ -11,7 +11,7 @@ la = loader(driver=HTDriver())
 la.open()
 
 print "Loading SPI flash loader..."
-la.load_fx2("SpiLoader.bin")
+la.LoadFX2("SpiLoader.bin")
 
 fid = la.GetSpiFlashID()
 if fid==(0,0,0):

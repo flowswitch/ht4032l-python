@@ -11,8 +11,8 @@ la.Reset()
 la.SetThresholdA(3.3/2)
 la.SetThresholdB(3.3/2)
 
-la.config.SampleRate = 0x1C # 1KS/s
-la.config.EnableTrigger1 = 1
+la.config.SampleRate = 0x22 # 400MS/s
+la.config.EnableTrigger1 = 0
 la.config.EnableTrigger2 = 0
 la.config.Trigger1.EdgeSignal = 0 # A0
 la.config.Trigger1.EdgeType = 0 # posedge

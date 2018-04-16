@@ -166,6 +166,12 @@ class LA(object):
 			return -1
 		return self.status[1]
 
+	def GetFpgaVersion(self):
+		"""Get FPGA bitstream version"""
+		if not self.Poll():
+			return -1
+		return self.status[4]
+
 	def SetThresholdA(self, voltage):
 		"""Set channel A threshold voltage"""
 		self.config.DacA = _thr2dac(voltage)
