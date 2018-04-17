@@ -76,7 +76,7 @@ class loader(object):
 		else:
 			return ord(res[0]), ord(res[1]), ord(res[2])
 
-	def ProgramSpiFpgaFlash(self, fname):
+	def ProgramSpiFlash(self, fname):
 		"""Write a file to SPI (FPGA) flash. Requires running SpiLoader"""
 		# write in 0x100 bytes chunks
 		size = getsize(fname)
