@@ -2,6 +2,10 @@
 
 Hantek 4032L logic analyzer python access. 
 
+## Requirements
+
+[Python 2.7.x](https://www.python.org)
+
 ## Supported drivers
 
 * Hantek original Windows driver
