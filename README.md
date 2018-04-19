@@ -9,6 +9,8 @@ Hantek 4032L logic analyzer python access.
 ## Supported drivers
 
 * Hantek original Windows driver
+* LibUSB on Windows
+* LibUSB on Linux
 
 ## FPGA flash tools
 

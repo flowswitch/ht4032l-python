@@ -1,6 +1,6 @@
 """Firmware service functions access"""
 from os.path import getsize
-from Driver import GetDevice
+from DriverFactory import GetDevice
 
 try:
 	from progressbar import ProgressBar

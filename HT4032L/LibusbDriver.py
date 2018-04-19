@@ -1,6 +1,12 @@
 """LibUSB driver wrapper"""
 # Requires libusb1 package. See https://pypi.org/project/libusb1
-import usb1
+from DriverTypes import DriverNotSupportedException
+
+try:
+	import usb1
+except ImportError:
+	raise DriverNotSupportedException("libusb1 not found")
+
 from struct import pack, unpack
 from binascii import hexlify
 

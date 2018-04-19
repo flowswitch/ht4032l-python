@@ -1,4 +1,9 @@
 """Hantek Windows driver wrapper"""
+from DriverTypes import DriverNotSupportedException
+import os
+if os.name!="nt":
+	raise DriverNotSupportedException("Not a Windows platform")
+
 import ctypes
 import ctypes.wintypes as wintypes
 from ctypes import windll
