@@ -101,6 +101,7 @@ class HTDriver(object):
 		index - device index
 		dump - dump all communications
 		"""
+		self.name = "Hantek Windows driver"
 		self.index = index
 		self.dump = dump
 		self._fhandle = None

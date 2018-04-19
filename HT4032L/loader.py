@@ -1,5 +1,6 @@
 """Firmware service functions access"""
 from os.path import getsize
+from Driver import GetDevice
 
 try:
 	from progressbar import ProgressBar
@@ -18,8 +19,14 @@ except ImportError:
 
 class loader(object):
 	"""fw/eep/flash loader"""
-	def __init__(self, driver):
-		self.driver = driver
+	def __init__(self, driver="auto", index=0, dump=False):
+		"""Param: driver - driver wrapper instance"""
+		if driver=="auto":
+			self.driver = GetDevice(index=index, dump=dump)
+			if not self.driver:
+				raise Exception("Device not found")
+		else:
+			self.driver = driver
 
 	def open(self):
 		self.driver.open()

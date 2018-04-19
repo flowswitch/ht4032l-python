@@ -1,13 +1,15 @@
 """FX2 firmware load example"""
 from sys import argv, exit
-from HT4032L import HTDriver, loader
+from HT4032L import loader
 
 KnownFlashes = { (0xC2, 0x20, 0x13) : "MX25L4005" }
 
 if len(argv)!=2:
 	exit("Usage: "+argv[0]+" <fpga.bin>")
 
-la = loader(driver=HTDriver())
+la = loader()
+print "Using", la.driver.name
+
 la.open()
 
 print "Loading SPI flash loader..."

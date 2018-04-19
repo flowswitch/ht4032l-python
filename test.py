@@ -1,8 +1,10 @@
 """Acquisition example"""
 import sys
-from HT4032L import HTDriver, LA
+from HT4032L import LA
 
-la = LA(driver=HTDriver()) # use Hantek native driver
+la = LA()
+print "Using", la.driver.name
+
 la.open()
 
 print "Reset..."
@@ -11,7 +13,8 @@ la.Reset()
 la.SetThresholdA(3.3/2)
 la.SetThresholdB(3.3/2)
 
-la.config.SampleRate = 0x22 # 400MS/s
+la.config.SampleRate = 0x1B # 2KS/s
+la.config.SampleDepth = 2048
 la.config.EnableTrigger1 = 0
 la.config.EnableTrigger2 = 0
 la.config.Trigger1.EdgeSignal = 0 # A0
@@ -29,7 +32,7 @@ while la.status[2]!=2: # not DONE
 		prev_status = la.status[2]
 	sys.stdout.write("\r%08X" % (la.status[1]))
 
-print "Getting data..."
+print "\nGetting data..."
 data = la.GetData()
 la.close()
 print "Got %d samples" % (len(data))

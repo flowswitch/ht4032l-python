@@ -1,8 +1,10 @@
 """Acquisition example"""
 import sys
-from HT4032L import HTDriver, LA
+from HT4032L import LA
 
-la = LA(driver=HTDriver()) # use Hantek native driver
+la = LA()
+print "Using", la.driver.name
+
 la.open()
 
 print "Reset..."
