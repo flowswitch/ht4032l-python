@@ -4,13 +4,13 @@ Hantek 4032L logic analyzer python access.
 
 ## Requirements
 
-[Python 2.7.x](https://www.python.org)
+* [Python 2.7.x](https://www.python.org)
 
 ## Supported drivers
 
 * Hantek original Windows driver
-* LibUSB on Windows
-* LibUSB on Linux
+* LibUSB on Windows (requires [Python libusb1 wrapper](https://pypi.org/project/libusb1/) and [libusb-1.0.dll](https://sourceforge.net/projects/libusb/files/libusb-1.0/))
+* LibUSB on Linux (requires [Python libusb1 wrapper](https://pypi.org/project/libusb1/) and [libusb-1.0](https://sourceforge.net/projects/libusb/files/libusb-1.0/))
 
 ## FPGA flash tools
 
@@ -28,3 +28,4 @@ Hantek 4032L logic analyzer python access.
 
 - [Protocol description on Sigrok site](https://sigrok.org/wiki/Hantek_4032L)
 - [FPGA loader sources](https://github.com/andy9a9/fx2eeprom/tree/master/fx2eeprom/FX2)
+- [Hantek 4032L FPGA bitstreams collection](https://nofile.io/f/wHDvptqc84x/la4032_fpga.7z)
