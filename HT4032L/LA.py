@@ -3,7 +3,7 @@ import sys
 import ctypes
 from time import sleep
 from array import array
-from Driver import GetDevice
+from DriverFactory import GetDevice
 
 # find array typecode for uint32 for this platform
 uint32_typecode = None
