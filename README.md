@@ -28,4 +28,4 @@ Hantek 4032L logic analyzer python access.
 
 - [Protocol description on Sigrok site](https://sigrok.org/wiki/Hantek_4032L)
 - [FPGA loader sources](https://github.com/andy9a9/fx2eeprom/tree/master/fx2eeprom/FX2)
-- [Hantek 4032L FPGA bitstreams collection](https://nofile.io/f/wHDvptqc84x/la4032_fpga.7z)
+- [Firmware collection](https://github.com/flowswitch/ht4032l-fw)
